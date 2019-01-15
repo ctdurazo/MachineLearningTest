@@ -1,0 +1,13 @@
+@relation decision.symbolic
+
+@attribute yearly {yes, no}
+@attribute monthly {yes, no}
+@attribute weekly {yes, no}
+@attribute daily {yes, no}
+@attribute result {Live, Dead, Reborn}
+
+@data
+
+no, no, no, no,	    Live
+no, yes, yes, yes,	Dead
+yes, yes, no, no,	Reborn
