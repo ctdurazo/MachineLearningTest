@@ -6,12 +6,7 @@
 @attribute daily REAL
 @attribute result {Live, Dead, Reborn}
 
-
 @data
-0, 0, 0, 0,	    Live
-0, 0, 0, 95,	Live
-0, 0, 95, 0,	Live
-0, 0, 95, 95,	Live
-0, 95, 95, 95,	Dead
-95, 95, 95, 95,	Dead
-95, 95, 95, 0,	Dead
+0, 0, 0, 0, ?
+0, 95, 95, 95, ?
+95, 0, 0, 0, ?

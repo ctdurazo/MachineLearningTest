@@ -1,19 +1,19 @@
 public class Datapoint {
-	private String yearly;
-	private String monthly;
-	private String weekly;
-	private String daily;
+	private double yearly;
+	private double monthly;
+	private double weekly;
+	private double daily;
 	private String result;
 
 	public Datapoint() {
-		this.yearly = "no";
-		this.monthly = "no";
-		this.weekly = "no";
-		this.daily = "no";
+		this.yearly = 0;
+		this.monthly = 0;
+		this.weekly = 0;
+		this.daily = 0;
 		this.result = "Live";
 	}
 
-	public Datapoint(String yearly, String monthly, String weekly, String daily, String result) {
+	public Datapoint(double yearly, double monthly, double weekly, double daily, String result) {
 		this.yearly = yearly;
 		this.monthly = monthly;
 		this.weekly = weekly;
@@ -21,35 +21,35 @@ public class Datapoint {
 		this.result = result;
 	}
 
-	public String getYearly() {
+	public double getYearly() {
 		return yearly;
 	}
 
-	public void setYearly(String yearly) {
+	public void setYearly(double yearly) {
 		this.yearly = yearly;
 	}
 
-	public String getMonthly() {
+	public double getMonthly() {
 		return monthly;
 	}
 
-	public void setMonthly(String monthly) {
+	public void setMonthly(double monthly) {
 		this.monthly = monthly;
 	}
 
-	public String getWeekly() {
+	public double getWeekly() {
 		return weekly;
 	}
 
-	public void setWeekly(String weekly) {
+	public void setWeekly(double weekly) {
 		this.weekly = weekly;
 	}
 
-	public String getDaily() {
+	public double getDaily() {
 		return daily;
 	}
 
-	public void setDaily(String daily) {
+	public void setDaily(double daily) {
 		this.daily = daily;
 	}
 

@@ -1,5 +1,6 @@
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.evaluation.output.prediction.PlainText;
 import weka.classifiers.trees.Id3;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
@@ -22,6 +23,7 @@ public class SiteHealthTest {
 	/** file names are defined*/
 	public static final String TRAINING_DATA_SET_FILENAME="siteHealth-train.arff";
 	public static final String TESTING_DATA_SET_FILENAME="siteHealth-test.arff";
+	public static final String PREDICTION_DATA_SET_FILENAME="siteHealth-prediction-test.arff";
 	public static final List<Datapoint> input = new ArrayList<>();
 
 	/**
@@ -34,7 +36,6 @@ public class SiteHealthTest {
 		/**
 		 * we can set the file i.e., loader.setFile("finename") to load the data
 		 */
-		int classIdx = 1;
 		/** the arffloader to load the arff file */
 		ArffLoader loader = new ArffLoader();
 		/** load the traing data */
@@ -46,7 +47,7 @@ public class SiteHealthTest {
 		//loader.setFile(new File(fileName));
 		Instances dataSet = loader.getDataSet();
 		/** set the index based on the data given in the arff files */
-		dataSet.setClassIndex(classIdx);
+		dataSet.setClassIndex(dataSet.numAttributes()-1);
 		return dataSet;
 	}
 
@@ -59,19 +60,15 @@ public class SiteHealthTest {
 	public static Instances getDataSet(List<Datapoint> input) throws IOException {
 		int classIdx = 1;
 
-		FastVector fv = new FastVector(2);
-		fv.addElement("yes");
-		fv.addElement("no");
-
 		FastVector resultfv = new FastVector(3);
 		resultfv.addElement("Live");
 		resultfv.addElement("Dead");
 		resultfv.addElement("Reborn");
 
-		Attribute yearly = new Attribute("yearly", fv);
-		Attribute monthly = new Attribute("monthly", fv);
-		Attribute weekly = new Attribute("weekly", fv);
-		Attribute daily = new Attribute("daily", fv);
+		Attribute yearly = new Attribute("yearly");
+		Attribute monthly = new Attribute("monthly");
+		Attribute weekly = new Attribute("weekly");
+		Attribute daily = new Attribute("daily");
 		Attribute result = new Attribute("result", resultfv);
 
 		FastVector attrList = new FastVector(5);
@@ -94,7 +91,7 @@ public class SiteHealthTest {
 			dataSet.add(inst);
 		}
 
-		dataSet.setClassIndex(classIdx);
+		dataSet.setClassIndex(dataSet.numAttributes()-1);
 
 		return dataSet;
 	}
@@ -106,26 +103,28 @@ public class SiteHealthTest {
 	 */
 	public static void process() throws Exception {
 
-		input.add(new Datapoint("no", "no", "no", "no", "Live"));
-		input.add(new Datapoint("no", "no", "no", "yes", "Live"));
-		input.add(new Datapoint("no", "no", "yes", "yes", "Live"));
-		input.add(new Datapoint("no", "yes", "yes", "yes", "Dead"));
-		input.add(new Datapoint("no", "yes", "yes", "yes", "Dead"));
-		input.add(new Datapoint("yes", "yes", "yes", "no", "Dead"));
-		input.add(new Datapoint("yes", "yes", "no", "no", "Reborn"));
-		input.add(new Datapoint("yes", "no", "no", "no", "Reborn"));
+		input.add(new Datapoint(0, 0, 0, 0, "Live"));
+		input.add(new Datapoint(0, 0, 0, 95, "Live"));
+		input.add(new Datapoint(0, 0, 95, 95, "Live"));
+		input.add(new Datapoint(0, 95, 95, 95, "Dead"));
+		input.add(new Datapoint(0, 95, 95, 95, "Dead"));
+		input.add(new Datapoint(95, 95, 95, 0, "Dead"));
+		input.add(new Datapoint(95, 95, 0, 0, "Reborn"));
+		input.add(new Datapoint(95, 0, 0, 0, "Reborn"));
 
 		Instances trainingDataSet = getDataSet(input);
 		//Instances trainingDataSet = getDataSet(TRAINING_DATA_SET_FILENAME);
 		Instances testingDataSet = getDataSet(TESTING_DATA_SET_FILENAME);
+		Instances predictionDataSet = getDataSet(PREDICTION_DATA_SET_FILENAME);
 
 		System.out.println("************************** J48 *************************");
 		/** Classifier here is Linear Regression */
 		Classifier classifier = new J48();
 
-		//J48,Id3
+		//J48
 		/** */
 		classifier.buildClassifier(trainingDataSet);
+
 		/**
 		 * train the alogorithm with the training data and evaluate the
 		 * algorithm with testing data
@@ -139,27 +138,34 @@ public class SiteHealthTest {
 		System.out.println(classifier);
 		System.out.println(eval.toMatrixString());
 		System.out.println(eval.toClassDetailsString());
+		System.out.println(" Predictions ");
+		predictionDataSet.setClassIndex(predictionDataSet.numAttributes()-1);
+		Instance prediction = predictionDataSet.instance(2);
+		double predValue = classifier.classifyInstance(prediction);
+		System.out.println(predictionDataSet.classAttribute().value((int) predValue));
 
-		System.out.println("************************** ID3 *************************");
-		/** Classifier here is Linear Regression */
+		/*System.out.println("************************** ID3 *************************");
+		*//** Classifier here is Linear Regression *//*
 		Classifier id3Classifier = new Id3();
 
 		//J48,Id3
-		/** */
+		*//** *//*
 		id3Classifier.buildClassifier(trainingDataSet);
-		/**
+		*//**
 		 * train the alogorithm with the training data and evaluate the
 		 * algorithm with testing data
-		 */
+		 *//*
 		Evaluation evalId3 = new Evaluation(trainingDataSet);
 		evalId3.evaluateModel(id3Classifier, testingDataSet);
-		/** Print the algorithm summary */
+		*//** Print the algorithm summary *//*
 		System.out.println("** Decision Tress Evaluation with Datasets **");
 		System.out.println(evalId3.toSummaryString());
 		System.out.print(" the expression for the input data as per alogorithm is ");
 		System.out.println(id3Classifier);
 		System.out.println(evalId3.toMatrixString());
-		System.out.println(evalId3.toClassDetailsString());
+		System.out.println(evalId3.toClassDetailsString());*/
+
+
 	}
 
 }
