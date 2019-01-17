@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Gowtham Girithar Srirangasamy
+ * @author Christian Durazo
  *
  */
 public class SiteHealthTest {
